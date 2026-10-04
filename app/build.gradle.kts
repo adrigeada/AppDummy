@@ -53,4 +53,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.iconos.material)
+
+    // Coil para la carga de imágenes
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
