@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "edu.geadaadrian.appdummy"
-        minSdk = 29
+        minSdk = 30
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
@@ -37,7 +37,6 @@ android {
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -57,4 +56,8 @@ dependencies {
     // Coil para la carga de imágenes
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // build.gradle.kts (app) — referencia al catálogo con libs.*
+    implementation(libs.androidx.activity.compose)
+
 }
