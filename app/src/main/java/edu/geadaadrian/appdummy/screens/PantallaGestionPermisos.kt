@@ -33,7 +33,8 @@ sealed class EstadoPermiso {
 fun PantallaGestionPermisos() {
     val context = LocalContext.current
 
-    // Comprobación inicial del estado del permiso de cámara
+    // Comprobación inicial del estado del permiso de cámara.
+    //Permision_granted es un booleano que indica si el permiso ha sido concedido o no. PERMISSION_GRANTED = 0, PERMISSION_DENIED = -1
     var estadoPermiso by remember {
         val concedido = ContextCompat.checkSelfPermission(
             context, Manifest.permission.CAMERA
@@ -43,6 +44,7 @@ fun PantallaGestionPermisos() {
     }
 
     // Lanzador para solicitar el permiso de cámara
+    // La función lambda recibe un booleano que indica si el permiso fue concedido o no. si es true, el permiso fue concedido; si es false, el permiso fue denegado.
     val solicitarPermiso = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { concedido ->

@@ -51,13 +51,14 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    // Iconos de Material Design
     implementation(libs.iconos.material)
 
     // Coil para la carga de imágenes
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
-    // build.gradle.kts (app) — referencia al catálogo con libs.*
+    // Activity Compose para la gestión de permisos y otras funcionalidades de Activity en Compose
     implementation(libs.androidx.activity.compose)
 
 }

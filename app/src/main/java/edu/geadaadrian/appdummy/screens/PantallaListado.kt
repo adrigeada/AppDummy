@@ -1,7 +1,9 @@
 package edu.geadaadrian.appdummy.screens
 
+import android.content.Intent
 import android.util.Patterns
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,8 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,8 +45,8 @@ data class LibroUI(
 @Composable
 fun PantallaListado() {
     // Estado local de la pantalla (en B2 pasará al ViewModel)
-    var busqueda by remember { mutableStateOf("") }
-    var autorSeleccionado by remember { mutableStateOf("Todos") }
+    var busqueda by rememberSaveable { mutableStateOf("") }
+    var autorSeleccionado by rememberSaveable { mutableStateOf("Todos") }
     var libros by remember {
         mutableStateOf(
             listOf(
@@ -103,10 +107,11 @@ fun PantallaListado() {
     val librosFiltrados = libros.filter { libro ->
         val coincideBusqueda = busqueda.isBlank() ||
                 libro.titulo.contains(busqueda, ignoreCase = true)
-        val coincideGenero = autorSeleccionado == "Todos" ||
+        val coincideAutor = autorSeleccionado == "Todos" ||
                 libro.autor == autorSeleccionado
-        coincideBusqueda && coincideGenero
+        coincideBusqueda && coincideAutor
     }
+
 
     Scaffold(
         topBar = {
@@ -205,11 +210,13 @@ fun PantallaListado() {
 
 @Composable
 fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (Int) -> Unit) {
+    val context = LocalContext.current
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(libro.titulo, style = MaterialTheme.typography.titleSmall)
             if (Patterns.WEB_URL.matcher(libro.cover).matches())
@@ -221,6 +228,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                     contentDescription = "Portada de ${libro.titulo}",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.width(200.dp)
+                        .height(200.dp)
                 )
             else // Si no es una URL válida, se muestra una imagen por defecto
                 AsyncImage(
@@ -243,7 +251,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                 IconButton(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.5f),
+                        .weight(1f),
                     onClick = { onToggleLeido(libro.id) }) {
                     Icon(
                         imageVector = if (libro.leido) Icons.Default.BookmarkAdded
@@ -256,7 +264,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                 IconButton(
                     modifier = Modifier
                         .fillMaxSize()
-                        .weight(0.5f),
+                        .weight(1f),
                     onClick = { onToggleFavorito(libro.id) }) {
                     Icon(
                         imageVector = if (libro.esFavorito) Icons.Default.Favorite
@@ -266,6 +274,26 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                IconButton(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, "Mira este libro: ${libro.titulo} de ${libro.autor}")
+                        }
+                        context.startActivity(
+                            Intent.createChooser(intent, "Compartir libro")
+                        )
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Compartir libro",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
             }
         }
     }
