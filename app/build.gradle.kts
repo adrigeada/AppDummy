@@ -51,14 +51,24 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    // Iconos de Material Design
+    // Iconos de Material Design. Para usar los iconos, se debe importar el paquete correspondiente en el archivo Kotlin donde se vayan a utilizar, por ejemplo: import androidx.compose.material.icons.Icons
     implementation(libs.iconos.material)
 
-    // Coil para la carga de imágenes
+    // Coil para la carga de imágenes.
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
     // Activity Compose para la gestión de permisos y otras funcionalidades de Activity en Compose
     implementation(libs.androidx.activity.compose)
+
+    // ViewModel y Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
+
+    // Corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+
+    // Testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
 }

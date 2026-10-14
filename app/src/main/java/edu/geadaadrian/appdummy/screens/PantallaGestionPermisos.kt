@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 
 // ─── screens/PantallaGestionPermisos.kt ──────────────────────────────────────────────────────────
 
@@ -44,7 +45,7 @@ fun PantallaGestionPermisos() {
     }
 
     // Lanzador para solicitar el permiso de cámara
-    // La función lambda recibe un booleano que indica si el permiso fue concedido o no. si es true, el permiso fue concedido; si es false, el permiso fue denegado.
+    // La función lambda recibe un booleano que indica si el permiso fue concedido o no. si es true, el permiso fue concedido; si es false, el permiso fue denegado. En esta funcion es "concedido"
     val solicitarPermiso = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { concedido ->
@@ -118,7 +119,7 @@ fun PantallaGestionPermisos() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PantallaPermsisosPreview() {
-    MaterialTheme {
+    AppDummyTheme() {
         PantallaGestionPermisos()
     }
 }

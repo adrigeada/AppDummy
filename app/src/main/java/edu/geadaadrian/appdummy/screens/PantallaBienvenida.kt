@@ -1,4 +1,4 @@
-package edu.geadaadrian.appdummy
+package edu.geadaadrian.appdummy.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,9 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 
 // ─── PantallaBienvenida.kt ───────────────────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,7 +99,7 @@ fun PantallaBienvenida(onEntrar: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PantallaBienvenidaPreview() {
-    MaterialTheme {
+    AppDummyTheme() {
         PantallaBienvenida(onEntrar = { })
     }
 }

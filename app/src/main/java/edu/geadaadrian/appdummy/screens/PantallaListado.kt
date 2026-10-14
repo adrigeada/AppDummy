@@ -26,6 +26,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import edu.geadaadrian.appdummy.R
+import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 
 // ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
 
@@ -153,7 +154,7 @@ fun PantallaListado() {
             ) {
                 items(autores) { autor ->
                     FilterChip(
-                        selected = autor == autorSeleccionado,
+                        selected = autor == autorSeleccionado,//booleano que indica si el chip está seleccionado o no
                         onClick = { autorSeleccionado = autor },
                         label = { Text(autor) }
                     )
@@ -302,7 +303,7 @@ fun ItemLibro(libro: LibroUI, onToggleLeido: (Int) -> Unit, onToggleFavorito: (I
 @Preview(showBackground = true)
 @Composable
 fun PantallaListadoPreview() {
-    MaterialTheme {
+    AppDummyTheme {
         PantallaListado()
     }
 }
