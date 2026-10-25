@@ -71,8 +71,8 @@ fun EjemploModifier() {
         Text(
             text = "Con padding fuera del fondo",
             modifier = Modifier
+                .padding(16.dp)
                 .background(Color.Yellow)   // el fondo NO incluye el padding
-                .padding(16.dp)             // el padding se aplica DENTRO del fondo
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -81,8 +81,8 @@ fun EjemploModifier() {
             text = "Con fondo sobre el padding",
             modifier = Modifier
                 .background(Color.Red)
-                .padding(16.dp)             // el padding se aplica ANTES del fondo
-                .background(Color.Yellow)   // el fondo SÍ incluye el padding
+                .padding(16.dp)             // el padding se aplica sobre el fondo
+
         )
 
     }
