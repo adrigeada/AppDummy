@@ -1,7 +1,8 @@
-package edu.geadaadrian.appdummy.screens
+package edu.geadaadrian.appdummy.screens.permisos
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
@@ -22,16 +23,10 @@ import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 // ─── screens/PantallaGestionPermisos.kt ──────────────────────────────────────────────────────────
 
 // Estado del permiso — representado como sealed class
-sealed class EstadoPermiso {
-    data object Concedido : EstadoPermiso()
-    data object Pendiente : EstadoPermiso()
-    data object Denegado : EstadoPermiso()
-    data object DenegadoPermanentemente : EstadoPermiso()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaGestionPermisos() {
+fun PantallaGestionPermisos(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     // Comprobación inicial del estado del permiso de cámara.
@@ -39,9 +34,9 @@ fun PantallaGestionPermisos() {
     var estadoPermiso by remember {
         val concedido = ContextCompat.checkSelfPermission(
             context, Manifest.permission.CAMERA
-        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED
 
-        mutableStateOf(if (concedido) EstadoPermiso.Concedido else EstadoPermiso.Pendiente)
+        mutableStateOf(if (concedido) PermisoUiState.Concedido else PermisoUiState.Pendiente)
     }
 
     // Lanzador para solicitar el permiso de cámara
@@ -49,7 +44,7 @@ fun PantallaGestionPermisos() {
     val solicitarPermiso = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { concedido ->
-        estadoPermiso = if (concedido) EstadoPermiso.Concedido else EstadoPermiso.Denegado
+        estadoPermiso = if (concedido) PermisoUiState.Concedido else PermisoUiState.Denegado
     }
 
     Scaffold(
@@ -66,18 +61,18 @@ fun PantallaGestionPermisos() {
             // Icono según estado
             val (icono, colorIcono, descripcion) =
                 when (estadoPermiso) {
-                EstadoPermiso.Concedido -> Triple(
+                PermisoUiState.Concedido -> Triple(
                     Icons.Default.CheckCircle,
                     MaterialTheme.colorScheme.primary,
                     "Cámara disponible"
                 )
-                EstadoPermiso.Pendiente -> Triple(
+                PermisoUiState.Pendiente -> Triple(
                     Icons.Default.CameraAlt,
                     MaterialTheme.colorScheme.onSurfaceVariant,
                     "La app necesita acceso a la cámara para capturar imágenes de portadas"
                 )
-                EstadoPermiso.Denegado,
-                EstadoPermiso.DenegadoPermanentemente -> Triple(
+                PermisoUiState.Denegado,
+                PermisoUiState.DenegadoPermanentemente -> Triple(
                     Icons.Default.Block,
                     MaterialTheme.colorScheme.error,
                     "Sin acceso a la cámara"
@@ -91,15 +86,15 @@ fun PantallaGestionPermisos() {
 
             // Acción según estado
             when (estadoPermiso) {
-                EstadoPermiso.Concedido -> Text("✓ Puedes usar la cámara en AppDummy")
-                EstadoPermiso.Pendiente -> {
+                PermisoUiState.Concedido -> Text("✓ Puedes usar la cámara en AppDummy")
+                PermisoUiState.Pendiente -> {
                     Button(
                         onClick = { solicitarPermiso.launch(Manifest.permission.CAMERA) },
                         modifier = Modifier.fillMaxWidth()
                     ) { Text("Conceder permiso de cámara") }
                 }
-                EstadoPermiso.Denegado,
-                EstadoPermiso.DenegadoPermanentemente -> {
+                PermisoUiState.Denegado,
+                PermisoUiState.DenegadoPermanentemente -> {
                     OutlinedButton(
                         onClick = {
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

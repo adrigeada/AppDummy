@@ -58,11 +58,11 @@ class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
         // viewModelScope: corrutina ligada al ViewModel, se cancela al destruirlo
         viewModelScope.launch {
             _uiState.value = LibrosUiState.Cargando
-            Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
+            //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
             try {
                 val libros = repository.getLibros()
                 _uiState.value = LibrosUiState.Exito(libros)
-                Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
+                //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
             } catch (e: Exception) {
                 _uiState.value = LibrosUiState.Error(
                     e.message ?: "Error desconocido al cargar los libros"
@@ -76,7 +76,7 @@ class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
             try {
                 val autores = repository.getAutores()
                 _autores.value = listOf("Todos") + autores
-                Log.i("LibrosViewModel", "Autores cargados: ${_autores.value}")
+                //Log.i("LibrosViewModel", "Autores cargados: ${_autores.value}")
             } catch (e: Exception) {
                 _uiState.value = LibrosUiState.Error(
                     e.message ?: "Error desconocido al cargar los autores"
@@ -92,7 +92,7 @@ class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
     fun toggleFavorito(libro : Libro) {
         // update{} es atómico y thread-safe: lee el estado actual y produce el nuevo
         // en una sola operación, sin condiciones, evitando problemas de concurrencia.
-        Log.i("LibrosViewModel", "toggleFavorito: $libro")
+        //Log.i("LibrosViewModel", "toggleFavorito: $libro")
         _uiState.update { estado ->
             if (estado is LibrosUiState.Exito) {
                 estado.copy(libros = estado.libros.map {
@@ -112,7 +112,7 @@ class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
     }
 
     fun toggleLeido(libro : Libro) {
-        Log.i("LibrosViewModel", "toggleLeido: $libro")
+        //Log.i("LibrosViewModel", "toggleLeido: $libro")
         _uiState.update { estado ->
             if (estado is LibrosUiState.Exito) {
                 estado.copy(

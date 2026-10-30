@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import edu.geadaadrian.appdummy.navegacion.AppNavigation
 import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 
 
@@ -28,13 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppDummyTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-
-                }
+                AppNavigation()
             }
         }
     }
@@ -53,40 +48,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     AppDummyTheme {
-        //Greeting("Android")
-        EjemploModifier()
-    }
-}
-
-@Composable
-fun EjemploModifier() {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ){
-
-        // El orden de los modificadores afecta al resultado visual
-        Text(
-            text = "Con padding fuera del fondo",
-            modifier = Modifier
-                .padding(16.dp)
-                .background(Color.Yellow)   // el fondo NO incluye el padding
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Con fondo sobre el padding",
-            modifier = Modifier
-                .background(Color.Red)
-                .padding(16.dp)             // el padding se aplica sobre el fondo
-
-        )
+        Greeting("Android")
 
     }
-
 }
 
 

@@ -1,0 +1,30 @@
+package edu.geadaadrian.appdummy.navegacion
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Book
+import androidx.compose.ui.graphics.vector.ImageVector
+
+data class ItemNavegacion<T : Any>(
+    val etiqueta: String,
+    val ruta: T,
+    val icono: ImageVector,
+    val iconoSeleccionado: ImageVector = icono
+)
+
+val itemsNavegacionPrincipal = listOf(
+    ItemNavegacion(
+        etiqueta = "Catálogo",
+        ruta = Listado, // <- Ruta de Navegación a la pantalla listado.
+        icono = Icons.Outlined.Book,
+        iconoSeleccionado = Icons.Filled.Book
+    ),
+    ItemNavegacion(
+        etiqueta = "Favoritos",
+        ruta = Favoritos,
+        icono = Icons.Default.FavoriteBorder,
+        iconoSeleccionado = Icons.Filled.Favorite
+    )
+)

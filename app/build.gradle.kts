@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -8,6 +9,9 @@ android {
     compileSdk {
         version = release(37)
     }
+//    testOptions{
+//        unitTests.isReturnDefaultValues = true
+//    }
 
     defaultConfig {
         applicationId = "edu.geadaadrian.appdummy"
@@ -38,6 +42,7 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
@@ -70,5 +75,11 @@ dependencies {
 
     // Testing
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
+
+    // Navigation Compose (API tipada disponible desde 2.8.0)
+    implementation("androidx.navigation:navigation-compose:2.9.8")
+
+    // Kotlin Serialization — imprescindible para las rutas @Serializable
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
 
 }

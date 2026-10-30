@@ -1,4 +1,4 @@
-package edu.geadaadrian.appdummy.screens
+package edu.geadaadrian.appdummy.screens.bienvenida
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,7 +18,7 @@ import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 // ─── PantallaBienvenida.kt ───────────────────────────────────────────────────────────────────────
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaBienvenida(onEntrar: () -> Unit) {
+fun PantallaBienvenida(onEntrar: () -> Unit, modifier: Modifier = Modifier) {
     var nombreUsuario by rememberSaveable { mutableStateOf("") }
     val botonHabilitado = nombreUsuario.trim().length >= 3
 
