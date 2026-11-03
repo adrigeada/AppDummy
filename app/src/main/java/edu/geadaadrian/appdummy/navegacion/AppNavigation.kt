@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import edu.geadaadrian.appdummy.screens.bienvenida.PantallaBienvenida
 import edu.geadaadrian.appdummy.screens.detalle.PantallaDetalle
 import edu.geadaadrian.appdummy.screens.listado.PantallaListado
 
@@ -21,7 +22,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Listado,
+            startDestination = Inicio,
             modifier = Modifier.padding(innerPadding)
         ) {
 
@@ -36,10 +37,28 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             composable<Detalle> { backStackEntry ->
                 val ruta: Detalle = backStackEntry.toRoute<Detalle>()
                 PantallaDetalle(
-//                    libroId = ruta.id,
-//                    onVolver = { navController.navigateUp() }
+                    libroId = ruta.id,
+                    onVolver = { navController.navigateUp() }
                 )
             }
+
+            composable<Inicio> {
+                PantallaBienvenida(
+                    onEntrar = {
+                        navController.navigate(Listado) {
+                            popUpTo(Inicio) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+//            composable<Favoritos> {backStackEntry ->
+//                PantallaFavoritos(
+//                    onNavegaDetalle = { id ->
+//                        navController.navigate(Detalle(id = id))
+//                    }
+//                )
+//            }
         }
     }
 }

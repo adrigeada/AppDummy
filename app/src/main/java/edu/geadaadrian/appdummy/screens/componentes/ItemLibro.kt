@@ -36,7 +36,11 @@ import edu.geadaadrian.appdummy.data.model.Libro
 import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 
 @Composable
-fun ItemLibro(libro: Libro,modifier: Modifier= Modifier,onClickItem: () -> Unit = {}, onToggleLeido: (Int) -> Unit = {}, onToggleFavorito: (Int) -> Unit = {}) {
+fun ItemLibro(libro: Libro,
+              modifier: Modifier= Modifier,
+              onClickItem: () -> Unit = {}
+              ,onToggleLeido: (Int) -> Unit = {}
+              ,onToggleFavorito: (Int) -> Unit = {}) {
     val context = LocalContext.current
     Card(onClick = onClickItem, modifier = modifier) {
         Column(

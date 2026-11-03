@@ -1,7 +1,9 @@
 package edu.geadaadrian.appdummy.screens.detalle
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -13,11 +15,12 @@ import kotlinx.coroutines.launch
 
 class DetalleViewModel(
     private val libroId: Int,
-    private val repository: LibrosRepository
+    private val repository: LibrosRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<DetalleUiState>(DetalleUiState.Cargando)
     val uiState: StateFlow<DetalleUiState> = _uiState.asStateFlow()
+
 
     init {
         cargarDetalle()

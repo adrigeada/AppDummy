@@ -53,7 +53,8 @@ fun PantallaListado(
                         snackbarHostState.showSnackbar(evento.mensaje)
                     }
                 }
-                is LibrosEvento.NavegarADetalle -> { /* navController.navigate(ruta tipada — ver T3 )*/ }
+                is LibrosEvento.NavegarADetalle -> {
+                /* navController.navigate(ruta tipada — ver T3 )*/ }
             }
         }
     }
