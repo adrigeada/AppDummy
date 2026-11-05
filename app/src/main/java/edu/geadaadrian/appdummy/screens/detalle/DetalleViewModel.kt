@@ -7,17 +7,21 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.toRoute
+import coil3.decode.StaticImageDecoder
 import edu.geadaadrian.appdummy.data.repository.LibrosRepository
+import edu.geadaadrian.appdummy.navegacion.Detalle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetalleViewModel(
-    private val libroId: Int,
+    savedStateHandle: SavedStateHandle,
     private val repository: LibrosRepository,
 ) : ViewModel() {
 
+    private val libroId: Int = savedStateHandle.toRoute<Detalle>().id
     private val _uiState = MutableStateFlow<DetalleUiState>(DetalleUiState.Cargando)
     val uiState: StateFlow<DetalleUiState> = _uiState.asStateFlow()
 
@@ -35,10 +39,10 @@ class DetalleViewModel(
     }
 
     companion object {
-        fun factoryConId(id: Int): ViewModelProvider.Factory = viewModelFactory {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 DetalleViewModel(
-                    libroId = id,
+                    savedStateHandle = createSavedStateHandle(),
                     repository = LibrosRepository()
                 )
             }

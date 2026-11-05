@@ -1,14 +1,14 @@
 package edu.geadaadrian.appdummy.screens.listado
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import edu.geadaadrian.appdummy.data.model.Libro
 import edu.geadaadrian.appdummy.data.repository.LibrosRepository
+import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosEvento
+import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,11 +18,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// Eventos de UI — ocurren una sola vez
-sealed class LibrosEvento {
-    data class MostrarSnackbar(val mensaje: String) : LibrosEvento()
-    data class NavegarADetalle(val id: Int) : LibrosEvento()
-}
 class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
 
     // Estado principal de la UI

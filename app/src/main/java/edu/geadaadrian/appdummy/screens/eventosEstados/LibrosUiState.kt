@@ -1,4 +1,4 @@
-package edu.geadaadrian.appdummy.screens.listado
+package edu.geadaadrian.appdummy.screens.eventosEstados
 
 import edu.geadaadrian.appdummy.data.model.Libro
 

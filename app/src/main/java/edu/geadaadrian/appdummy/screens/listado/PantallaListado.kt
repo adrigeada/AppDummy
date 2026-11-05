@@ -21,6 +21,8 @@ import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import edu.geadaadrian.appdummy.screens.componentes.ItemLibro
+import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosEvento
+import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosUiState
 
 // ─── screens/PantallaListado.kt ───────────────────────────────────────────────────────────────
 
@@ -28,7 +30,8 @@ import edu.geadaadrian.appdummy.screens.componentes.ItemLibro
 @Composable
 fun PantallaListado(
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
-    onNavegaADetalle: (Int) -> Unit = {}
+    onNavegaADetalle: (Int) -> Unit = {},
+    onNavegaAPermisos: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val busqueda by viewModel.busqueda.collectAsStateWithLifecycle()
@@ -54,18 +57,24 @@ fun PantallaListado(
                     }
                 }
                 is LibrosEvento.NavegarADetalle -> {
-                /* navController.navigate(ruta tipada — ver T3 )*/ }
+                /* navController.navigate(ruta tipada — ver T3 )*/
+                //navController.navigate(Detalle(id = evento.libroId))
+                }
             }
         }
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
                 title = { Text("AppDummy") },
                 actions = {
                     IconButton(onClick = { }) {
                         Icon(Icons.Default.AccountCircle, contentDescription = "Perfil")
+                    }
+                    IconButton(onClick = {onNavegaAPermisos() }) {
+                        Icon(Icons.Default.PermDeviceInformation, contentDescription = "Permisos")
                     }
                 }
             )
@@ -145,7 +154,8 @@ fun PantallaListado(
                             contentPadding = PaddingValues(horizontal = 8.dp),
                             columns = GridCells.Fixed(2),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             items(librosFiltrados, key = { it.id }) { libro ->
                                 ItemLibro(

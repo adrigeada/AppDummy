@@ -36,9 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun PantallaDetalle(
     modifier: Modifier = Modifier,
-    libroId: Int,
     onVolver: () -> Unit,
-    viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.factoryConId(libroId))
+    viewModel: DetalleViewModel = viewModel(factory = DetalleViewModel.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -118,7 +117,6 @@ fun PantallaDetalle(
 @Composable
 fun PantallaDetallePreview(){
     PantallaDetalle(
-        libroId = 1,
         onVolver = {}
     )
 }

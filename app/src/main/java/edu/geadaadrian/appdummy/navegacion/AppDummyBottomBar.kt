@@ -2,11 +2,13 @@ package edu.geadaadrian.appdummy.navegacion
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun AppDummyBottomBar(navController: NavController) {
@@ -36,7 +38,7 @@ fun AppDummyBottomBar(navController: NavController) {
                         navController.navigate(item.ruta) {
                             // popUpTo: vuelve al inicio antes de navegar
                             // evita acumular destinos en la pila al cambiar de pestaña
-                            popUpTo(navController.graph.findStartDestination().id) {
+                            popUpTo<Listado> {
                                 saveState = true   // guarda el estado de la pantalla anterior
                             }
                             // launchSingleTop: no apila múltiples copias del mismo destino
@@ -56,4 +58,12 @@ fun AppDummyBottomBar(navController: NavController) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AppDummyBottomBarPreview() {
+    // Preview con un NavController simulado
+    val navController = rememberNavController()
+    AppDummyBottomBar(navController = navController)
 }
