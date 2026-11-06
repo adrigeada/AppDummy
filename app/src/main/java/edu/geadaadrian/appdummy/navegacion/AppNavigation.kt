@@ -82,6 +82,6 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
 @Preview(showBackground = true)
 @Composable
-fun AppNavigationPreviwe(){
+fun AppNavigationPreview(){
     AppNavigation()
 }

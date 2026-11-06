@@ -30,6 +30,7 @@ import edu.geadaadrian.appdummy.screens.componentes.ItemLibro
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaFavoritos(
+    modifier: Modifier = Modifier,
     viewModel: FavoritosViewModel = viewModel(factory = FavoritosViewModel.Factory),
     onNavegaADetalle: (Int) -> Unit = {},
     onNavegaAPermisos: () -> Unit = {}
@@ -59,7 +60,8 @@ fun PantallaFavoritos(
                 }
                 is LibrosEvento.NavegarADetalle -> {
                     /* navController.navigate(ruta tipada — ver T3 )*/
-                    //navController.navigate(Detalle(id = evento.libroId))
+                    //el nav controler solo lo recibe la appNavigation, no aquí, por eso se hace a través de un callback al pulsar el libro y activar onClickItem de libro
+                    //onNavegaADetalle(evento.id)???
                 }
             }
         }
@@ -127,7 +129,7 @@ fun PantallaFavoritos(
                     val librosFiltrados = estado.libros.filter {
                         val coincideBusqueda = busqueda.isBlank() || it.titulo.contains(busqueda, ignoreCase = true)
                         val coincideGenero = autorSeleccionado == "Todos" || it.autor == autorSeleccionado
-                        coincideBusqueda && coincideGenero && it.esFavorito
+                        coincideBusqueda && coincideGenero
                     }
 
                     // Resultado del filtrado

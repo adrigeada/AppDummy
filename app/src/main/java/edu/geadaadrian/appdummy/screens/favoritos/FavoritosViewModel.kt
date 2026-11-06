@@ -54,7 +54,7 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
             _uiState.value = LibrosUiState.Cargando
             //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
             try {
-                val libros = repository.getLibros()
+                val libros = repository.getLibrosFavoritos()
                 _uiState.value = LibrosUiState.Exito(libros)
                 //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
             } catch (e: Exception) {

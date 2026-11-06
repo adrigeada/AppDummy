@@ -29,6 +29,7 @@ import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosUiState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaListado(
+    modifier: Modifier = Modifier,
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
     onNavegaADetalle: (Int) -> Unit = {},
     onNavegaAPermisos: () -> Unit = {}
