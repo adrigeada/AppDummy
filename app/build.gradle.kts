@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    id("org.jetbrains.kotlin.plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
+
+    // Tema 4. Room
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "edu.geadaadrian.appdummy"
-    compileSdk {
-        version = release(37)
-    }
-//    testOptions{
-//        unitTests.isReturnDefaultValues = true
-//    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "edu.geadaadrian.appdummy"
@@ -25,18 +24,26 @@ android {
 
     buildTypes {
         release {
-            optimization {
-                enable = false
-            }
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
@@ -48,6 +55,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
@@ -56,14 +64,14 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    // Iconos de Material Design. Para usar los iconos, se debe importar el paquete correspondiente en el archivo Kotlin donde se vayan a utilizar, por ejemplo: import androidx.compose.material.icons.Icons
+    // Iconos de Material Design
     implementation(libs.iconos.material)
 
-    // Coil para la carga de imágenes.
+    // Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
-    // Activity Compose para la gestión de permisos y otras funcionalidades de Activity en Compose
+    // Activity Compose
     implementation(libs.androidx.activity.compose)
 
     // ViewModel y Lifecycle
@@ -72,14 +80,18 @@ dependencies {
 
     // Corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
-
-    // Testing
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
 
-    // Navigation Compose (API tipada disponible desde 2.8.0)
+    // Navigation Compose y Serialization
     implementation("androidx.navigation:navigation-compose:2.9.8")
-
-    // Kotlin Serialization — imprescindible para las rutas @Serializable
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
 
+    // Room
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.8.4")
+    ksp("androidx.room:room-compiler:2.8.4")
+
+    // Testing de Room
+    testImplementation("androidx.room:room-testing:2.8.4")
+    androidTestImplementation("androidx.room:room-testing:2.8.4")
 }

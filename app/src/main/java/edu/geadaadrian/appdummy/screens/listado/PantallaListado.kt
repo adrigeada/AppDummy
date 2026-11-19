@@ -163,7 +163,7 @@ fun PantallaListado(
                                     libro = libro,
                                     modifier = Modifier.fillMaxWidth(),
                                     onClickItem = { onNavegaADetalle(libro.id) },
-                                    onToggleLeido = { viewModel.toggleLeido(libro)}, //it es el id del libro que se pasa desde ItemLibro
+                                    onToggleLeido = { viewModel.toggleLeido(libro)},
                                     onToggleFavorito = { viewModel.toggleFavorito(libro)}
                                 )
                             }

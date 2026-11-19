@@ -129,7 +129,7 @@ fun PantallaFavoritos(
                     val librosFiltrados = estado.libros.filter {
                         val coincideBusqueda = busqueda.isBlank() || it.titulo.contains(busqueda, ignoreCase = true)
                         val coincideGenero = autorSeleccionado == "Todos" || it.autor == autorSeleccionado
-                        coincideBusqueda && coincideGenero
+                        coincideBusqueda && coincideGenero && it.esFavorito
                     }
 
                     // Resultado del filtrado
@@ -164,7 +164,7 @@ fun PantallaFavoritos(
                                     libro = libro,
                                     modifier = Modifier.fillMaxWidth(),
                                     onClickItem = { onNavegaADetalle(libro.id) },
-                                    onToggleLeido = { viewModel.toggleLeido(libro)}, //it es el id del libro que se pasa desde ItemLibro
+                                    onToggleLeido = { viewModel.toggleLeido(libro)},
                                     onToggleFavorito = { viewModel.toggleFavorito(libro)}
                                 )
                             }
