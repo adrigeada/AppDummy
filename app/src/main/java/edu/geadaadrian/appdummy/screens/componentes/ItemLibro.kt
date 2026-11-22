@@ -39,8 +39,8 @@ import edu.geadaadrian.appdummy.ui.theme.AppDummyTheme
 fun ItemLibro(libro: Libro,
               modifier: Modifier= Modifier,
               onClickItem: () -> Unit = {}
-              ,onToggleLeido: (Int) -> Unit = {}
-              ,onToggleFavorito: (Int) -> Unit = {}) {
+              ,onToggleLeido: (String) -> Unit = {}
+              ,onToggleFavorito: (String) -> Unit = {}) {
     val context = LocalContext.current
     Card(onClick = onClickItem, modifier = modifier) {
         Column(
@@ -133,7 +133,7 @@ fun ItemLibro(libro: Libro,
 @Preview(showBackground = true)
 @Composable
 fun ItemLibroPreview(){
-    val libro = Libro(1, "Proyecto Hail Mary", "Andy Weir", 2021, "9788418037016", "https://covers.openlibrary.org/b/isbn/9788418037016-L.jpg", true, false)
+    val libro = Libro("1", "Proyecto Hail Mary", "Andy Weir", 2021, "9788418037016", "https://covers.openlibrary.org/b/isbn/9788418037016-L.jpg", true, false)
 
     AppDummyTheme() {
         ItemLibro(libro = libro, onToggleLeido =  {}, onToggleFavorito = {} )

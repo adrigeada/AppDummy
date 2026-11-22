@@ -94,4 +94,7 @@ dependencies {
     // Testing de Room
     testImplementation("androidx.room:room-testing:2.8.4")
     androidTestImplementation("androidx.room:room-testing:2.8.4")
+
+    // Gson — deserialización de JSON a objetos Kotlin/Java
+    implementation("com.google.code.gson:gson:2.14.0")
 }

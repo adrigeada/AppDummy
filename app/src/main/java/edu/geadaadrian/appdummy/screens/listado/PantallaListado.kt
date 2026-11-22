@@ -31,7 +31,7 @@ import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosUiState
 fun PantallaListado(
     modifier: Modifier = Modifier,
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
-    onNavegaADetalle: (Int) -> Unit = {},
+    onNavegaADetalle: (String) -> Unit = {},
     onNavegaAPermisos: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -80,7 +80,12 @@ fun PantallaListado(
                 }
             )
         },
-        snackbarHost = {SnackbarHost(snackbarHostState)}
+        snackbarHost = {SnackbarHost(snackbarHostState)},
+        floatingActionButton = {
+            FloatingActionButton(onClick = { viewModel.cargarLibros() }) {
+                Icon(Icons.Default.Add, contentDescription = "Actualizar")
+            }
+        }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             // Barra de búsqueda
@@ -189,7 +194,7 @@ fun PantallaListado(
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
+                        //Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
                     }
                 }
 

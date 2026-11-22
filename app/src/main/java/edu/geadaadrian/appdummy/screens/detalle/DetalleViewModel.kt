@@ -9,8 +9,10 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.toRoute
 import coil3.decode.StaticImageDecoder
+import edu.geadaadrian.appdummy.AppDummyApplication
 import edu.geadaadrian.appdummy.data.repository.LibrosRepository
 import edu.geadaadrian.appdummy.navegacion.Detalle
+import edu.geadaadrian.appdummy.screens.favoritos.FavoritosViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +23,7 @@ class DetalleViewModel(
     private val repository: LibrosRepository,
 ) : ViewModel() {
 
-    private val libroId: Int = savedStateHandle.toRoute<Detalle>().id
+    private val libroId: String = savedStateHandle.toRoute<Detalle>().id
     private val _uiState = MutableStateFlow<DetalleUiState>(DetalleUiState.Cargando)
     val uiState: StateFlow<DetalleUiState> = _uiState.asStateFlow()
 
@@ -32,7 +34,7 @@ class DetalleViewModel(
 
     private fun cargarDetalle() {
         viewModelScope.launch {
-            val libro = repository.getLibroPorId(libroId)
+            val libro = repository.obtenerPorId(libroId)
             _uiState.value = if (libro != null) DetalleUiState.Exito(libro)
             else DetalleUiState.NoEncontrado
         }
@@ -41,10 +43,10 @@ class DetalleViewModel(
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                DetalleViewModel(
-                    savedStateHandle = createSavedStateHandle(),
-                    repository = LibrosRepository()
-                )
+                val app = checkNotNull(
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
+                )as AppDummyApplication
+                FavoritosViewModel(app.container.librosRepository)
             }
         }
     }

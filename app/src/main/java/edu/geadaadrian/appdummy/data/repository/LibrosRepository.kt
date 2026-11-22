@@ -1,86 +1,52 @@
 package edu.geadaadrian.appdummy.data.repository
 
+import edu.geadaadrian.appdummy.data.datasource.local.LocalDataSource
 import edu.geadaadrian.appdummy.data.model.Libro
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
-import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.flow.Flow
 
-// En B3 este repositorio coordinará ROOM y Retrofit2.
-// Por ahora usa datos estáticos para centrar el aprendizaje en la arquitectura.
-class LibrosRepository {
+
+class LibrosRepository(private val localDataSource: LocalDataSource) {
+
+    // La UI siempre observa desde Room
+    fun observarLibros(): Flow<List<Libro>> = localDataSource.observarTodos()
+    fun observarFavoritos(): Flow<List<Libro>> = localDataSource.observarFavoritos()
+    fun observarPorId(id: String): Flow<Libro?> = localDataSource.observarPorId(id)
+
+    suspend fun toggleFavorito(id: String) = localDataSource.toggleFavorito(id)
+    suspend fun toggleLeido(id: String) = localDataSource.toggleLeido(id)
+    suspend fun insertarIgnorando(libros: List<Libro>) = localDataSource.insertarIgnorando(libros)
+    suspend fun obtenerAutores(): List<String>? = localDataSource.obtenerAutores()
+    suspend fun obtenerPorId(id: String): Libro? = localDataSource.obtenerPorId(id)
 
     private val libros = listOf(
         Libro(
-            1,
-            "Proyecto Hail Mary",
-            "Andy Weir",
-            2021,
-            "9788418037016",
-            "https://covers.openlibrary.org/b/isbn/9788418037016-L.jpg",
-            true,
-            false
+            id = "1",
+            titulo = "Proyecto Hail Mary",
+            autor = "Andy Weir",
+            year = 2021,
+            isbn = "9788418037016",
+            cover = "https://covers.openlibrary.org/b/isbn/9788418037016-L.jpg",
+            esFavorito = true,
+            leido = false
         ),
         Libro(
-            2,
-            "Juego de tronos",
-            "George R.R. Martin",
-            1996,
-            "9780307951182",
-            "https://covers.openlibrary.org/b/isbn/9780307951182-L.jpg",
-            true,
-            true
+            id = "2",
+            titulo = "Juego de tronos",
+            autor = "George R.R. Martin",
+            year = 1996,
+            isbn = "9780307951182",
+            cover = "https://covers.openlibrary.org/b/isbn/9780307951182-L.jpg",
+            esFavorito = true,
+            leido = true
         ),
-        Libro(
-            3,
-            "Festín de cuervos",
-            "George R.R. Martin",
-            2005,
-            "9780307951212",
-            "https://covers.openlibrary.org/b/isbn/9780307951212-L.jpg",
-            false,
-            false
-        ),
-        Libro(
-            4,
-            "Cementerio de Animales",
-            "Stephen King",
-            1983,
-            "9788401499845",
-            "https://covers.openlibrary.org/b/isbn/9788401499845-L.jpg",
-            false,
-            true
-        ),
-        Libro(
-            5,
-            "El juego de Ender",
-            "Orson Scott Card",
-            1985,
-            "9788498720068",
-            "https://covers.openlibrary.org/b/isbn/9788498720068-L.jpg",
-            false,
-            true
-        )
+        Libro("3", "Festín de cuervos", "George R.R. Martin", 2005, "9780307951212", "https://covers.openlibrary.org/b/isbn/9780307951212-L.jpg", false, false),
+        Libro("4", "Cementerio de Animales", "Stephen King", 1983, "9788401499845", "https://covers.openlibrary.org/b/isbn/9788401499845-L.jpg", false, true),
+        Libro("5", "El juego de Ender", "Orson Scott Card", 1985, "9788498720068", "https://covers.openlibrary.org/b/isbn/9788498720068-L.jpg", false, true)
     )
 
-    // suspend: puede suspenderse sin bloquear el hilo principal
-    suspend fun getLibros(): List<Libro> {
-        kotlinx.coroutines.delay(800.milliseconds)   // simula latencia de red
+
+    fun getLibros(): List<Libro> {
         return libros
-    }
-
-    suspend fun getLibrosFavoritos(): List<Libro> {
-        kotlinx.coroutines.delay(800.milliseconds)   // simula latencia de red
-        return libros.filter { it.esFavorito }
-    }
-
-    suspend fun getAutores(): List<String> {
-        kotlinx.coroutines.delay(300.milliseconds)
-        return libros.map { it.autor }.distinct().sorted()
-    }
-
-    suspend fun getLibroPorId(id: Int): Libro? {
-        kotlinx.coroutines.delay(300.milliseconds)
-        return libros.find { it.id == id }
     }
 
 }

@@ -5,23 +5,27 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import edu.geadaadrian.appdummy.AppDummyApplication
 import edu.geadaadrian.appdummy.data.model.Libro
 import edu.geadaadrian.appdummy.data.repository.LibrosRepository
 import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosEvento
 import edu.geadaadrian.appdummy.screens.eventosEstados.LibrosUiState
+import edu.geadaadrian.appdummy.screens.listado.LibrosViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FavoritosViewModel (private val repository: LibrosRepository): ViewModel() {
     // Estado principal de la UI
-    private val _uiState = MutableStateFlow<LibrosUiState>(LibrosUiState.Cargando)
-    val uiState: StateFlow<LibrosUiState> = _uiState.asStateFlow()
 
     // Estado del campo de búsqueda — independiente del UiState principal
     private val _busqueda = MutableStateFlow("")
@@ -42,40 +46,25 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
     )
     val eventos: SharedFlow<LibrosEvento> = _eventos.asSharedFlow()
 
-    init {
-        // Se ejecuta al crear el ViewModel — carga los datos automáticamente
-        cargarLibros()
-        cargarAutores()
-    }
 
-    fun cargarLibros() {
-        // viewModelScope: corrutina ligada al ViewModel, se cancela al destruirlo
-        viewModelScope.launch {
-            _uiState.value = LibrosUiState.Cargando
-            //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
-            try {
-                val libros = repository.getLibrosFavoritos()
-                _uiState.value = LibrosUiState.Exito(libros)
-                //Log.i("LibrosViewModel", "Estado actual: ${_uiState.value}")
-            } catch (e: Exception) {
-                _uiState.value = LibrosUiState.Error(
-                    e.message ?: "Error desconocido al cargar los libros"
-                )
+    val uiState: StateFlow<LibrosUiState> =
+        repository.observarFavoritos()
+            .map<List<Libro>, LibrosUiState> {
+                cargarAutores()   // cargar autores para el filtro de la UI
+                LibrosUiState.Exito(it)
             }
-        }
-    }
+            .catch { error -> emit(LibrosUiState.Error(error.message ?: "Error")) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = LibrosUiState.Cargando
+            )
 
     fun cargarAutores() {
         viewModelScope.launch {
-            try {
-                val autores = repository.getAutores()
-                _autores.value = listOf("Todos") + autores
-                //Log.i("LibrosViewModel", "Autores cargados: ${_autores.value}")
-            } catch (e: Exception) {
-                _uiState.value = LibrosUiState.Error(
-                    e.message ?: "Error desconocido al cargar los autores"
-                )
-            }
+            val autores = repository.obtenerAutores() ?: emptyList()
+            _autores.value = listOf("Todos") + autores
+            //Log.i("LibrosViewModel", "Autores cargados: ${_autores.value}")
         }
     }
 
@@ -84,15 +73,8 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
     }
 
     fun toggleFavorito(libro : Libro) {
-        // update{} es atómico y thread-safe: lee el estado actual y produce el nuevo
-        // en una sola operación, sin condiciones, evitando problemas de concurrencia.
-        //Log.i("LibrosViewModel", "toggleFavorito: $libro")
-        _uiState.update { estado ->
-            if (estado is LibrosUiState.Exito) {
-                estado.copy(libros = estado.libros.map {
-                    if (it.id == libro.id) it.copy(esFavorito = !it.esFavorito) else it
-                })
-            } else estado
+        viewModelScope.launch {
+            repository.toggleFavorito(libro.id)
         }
         //launch empieza una nueva corrutina en el scope del ViewModel
         viewModelScope.launch {
@@ -107,17 +89,8 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
 
     fun toggleLeido(libro : Libro) {
         //Log.i("LibrosViewModel", "toggleLeido: $libro")
-        _uiState.update { estado ->
-            if (estado is LibrosUiState.Exito) {
-                estado.copy(
-                    libros = estado.libros.map {
-                        if (it.id == libro.id) it.copy(leido = !it.leido)
-                        else it
-                    }
-                )
-            } else estado
-        }
         viewModelScope.launch {
+            repository.toggleLeido(libro.id)
             _eventos.emit(
                 LibrosEvento.MostrarSnackbar(
                     if (libro.leido) "\"${libro.titulo}\" marcado como no leído"
@@ -134,9 +107,10 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                // Instanciamos el repositorio directamente aquí.
-                // En B3, cuando necesite ROOM o Retrofit2, vendrá de un AppContainer.
-                FavoritosViewModel(LibrosRepository())
+                val app = checkNotNull(
+                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
+                )as AppDummyApplication
+                FavoritosViewModel(app.container.librosRepository)
             }
         }
     }

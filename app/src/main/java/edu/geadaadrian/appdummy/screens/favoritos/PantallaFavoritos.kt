@@ -32,7 +32,7 @@ import edu.geadaadrian.appdummy.screens.componentes.ItemLibro
 fun PantallaFavoritos(
     modifier: Modifier = Modifier,
     viewModel: FavoritosViewModel = viewModel(factory = FavoritosViewModel.Factory),
-    onNavegaADetalle: (Int) -> Unit = {},
+    onNavegaADetalle: (String) -> Unit = {},
     onNavegaAPermisos: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -190,7 +190,7 @@ fun PantallaFavoritos(
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
+                        //Button(onClick = viewModel::cargarLibros) { Text("Reintentar") }
                     }
                 }
 
