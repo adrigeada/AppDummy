@@ -62,11 +62,17 @@ class LibrosViewModel(private val repository: LibrosRepository) : ViewModel() {
     )
     val eventos: SharedFlow<LibrosEvento> = _eventos.asSharedFlow()
 
-    fun cargarLibros() {
-        viewModelScope.launch {
-            repository.insertarIgnorando(repository.getLibros())
-        }
-    }
+
+//    fun cargarLibros() {
+//        viewModelScope.launch {
+//            repository.insertarIgnorando(repository.getLibros())
+//        }
+//    }
+//
+//    init {
+//        cargarLibros()
+//        cargarAutores()
+//    }
 
 
     fun cargarAutores() {

@@ -129,7 +129,7 @@ fun PantallaFavoritos(
                     val librosFiltrados = estado.libros.filter {
                         val coincideBusqueda = busqueda.isBlank() || it.titulo.contains(busqueda, ignoreCase = true)
                         val coincideGenero = autorSeleccionado == "Todos" || it.autor == autorSeleccionado
-                        coincideBusqueda && coincideGenero && it.esFavorito
+                        coincideBusqueda && coincideGenero
                     }
 
                     // Resultado del filtrado

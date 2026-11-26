@@ -24,7 +24,7 @@ data class Libro(
     @ColumnInfo(name = "cover")
     val cover: String? = null,
 
-    @ColumnInfo(name = "es_Favorito")
+    @ColumnInfo(name = "es_favorito")
     val esFavorito: Boolean = false,
 
     @ColumnInfo(name = "leido")

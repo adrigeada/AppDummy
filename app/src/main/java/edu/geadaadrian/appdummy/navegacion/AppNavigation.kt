@@ -15,6 +15,7 @@ import edu.geadaadrian.appdummy.screens.bienvenida.PantallaBienvenida
 import edu.geadaadrian.appdummy.screens.detalle.PantallaDetalle
 import edu.geadaadrian.appdummy.screens.favoritos.PantallaFavoritos
 import edu.geadaadrian.appdummy.screens.listado.PantallaListado
+import edu.geadaadrian.appdummy.screens.nuevo.PantallaNuevoLibro
 import edu.geadaadrian.appdummy.screens.permisos.PantallaGestionPermisos
 
 @Composable
@@ -48,6 +49,9 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     },
                     onNavegaAPermisos = {
                         navController.navigate(Permisos)    // <- Ruta de Navegación a la pantalla de permisos.
+                    },
+                    onNavegaNuevoLibro = {
+                        navController.navigate(NuevoLibro)    // <- Ruta de Navegación a la pantalla de nuevo libro.
                     }
                 )
             }
@@ -74,6 +78,13 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 PantallaGestionPermisos(
                     onVolver = { navController.navigateUp() }
 
+                )
+            }
+
+            composable<NuevoLibro> {
+                PantallaNuevoLibro(
+                    onGuardado = { navController.navigateUp() },
+                    onCancelar = { navController.navigateUp() }
                 )
             }
         }

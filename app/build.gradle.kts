@@ -39,6 +39,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -95,6 +96,15 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.8.4")
     androidTestImplementation("androidx.room:room-testing:2.8.4")
 
-    // Gson — deserialización de JSON a objetos Kotlin/Java
-    implementation("com.google.code.gson:gson:2.14.0")
+    // Retrofit — cliente HTTP con soporte nativo a corrutinas
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
+    // OkHttp — cliente HTTP subyacente + interceptor de logs para desarrollo
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // Gson — deserialización de JSON a objetos Kotlin/Java (ya añadido en T4)
+    implementation(libs.gson)
+
 }

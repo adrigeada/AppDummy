@@ -32,7 +32,8 @@ fun PantallaListado(
     modifier: Modifier = Modifier,
     viewModel: LibrosViewModel = viewModel(factory = LibrosViewModel.Factory),
     onNavegaADetalle: (String) -> Unit = {},
-    onNavegaAPermisos: () -> Unit = {}
+    onNavegaAPermisos: () -> Unit = {},
+    onNavegaNuevoLibro: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val busqueda by viewModel.busqueda.collectAsStateWithLifecycle()
@@ -82,7 +83,7 @@ fun PantallaListado(
         },
         snackbarHost = {SnackbarHost(snackbarHostState)},
         floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.cargarLibros() }) {
+            FloatingActionButton(onClick = { onNavegaNuevoLibro() }) {
                 Icon(Icons.Default.Add, contentDescription = "Actualizar")
             }
         }

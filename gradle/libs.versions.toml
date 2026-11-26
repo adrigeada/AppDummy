@@ -10,6 +10,9 @@ kotlin = "2.4.20"
 composeBom = "2026.02.01"
 ksp = "2.3.10"
 room = "2.8.4"
+retrofit = "3.0.0"
+okhttp = "5.4.0"
+gson = "2.14.0"
 
 coilCompose = "3.5.0"
 runtime = "1.12.1"
@@ -36,6 +39,12 @@ iconos-material = { group = "androidx.compose.material", name = "material-icons-
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 
 [plugins]

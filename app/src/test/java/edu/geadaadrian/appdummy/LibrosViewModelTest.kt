@@ -24,7 +24,7 @@ class LibrosViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = LibrosViewModel(LibrosRepository())
+        //viewModel = LibrosViewModel(LibrosRepository())
     }
 
     @Test

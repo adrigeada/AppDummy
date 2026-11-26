@@ -75,9 +75,7 @@ class FavoritosViewModel (private val repository: LibrosRepository): ViewModel()
     fun toggleFavorito(libro : Libro) {
         viewModelScope.launch {
             repository.toggleFavorito(libro.id)
-        }
-        //launch empieza una nueva corrutina en el scope del ViewModel
-        viewModelScope.launch {
+
             _eventos.emit(
                 LibrosEvento.MostrarSnackbar(
                     if (libro.esFavorito) "\"${libro.titulo}\" eliminado de favoritos"

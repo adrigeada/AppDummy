@@ -8,11 +8,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.toRoute
-import coil3.decode.StaticImageDecoder
 import edu.geadaadrian.appdummy.AppDummyApplication
 import edu.geadaadrian.appdummy.data.repository.LibrosRepository
 import edu.geadaadrian.appdummy.navegacion.Detalle
-import edu.geadaadrian.appdummy.screens.favoritos.FavoritosViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -46,7 +44,10 @@ class DetalleViewModel(
                 val app = checkNotNull(
                     this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
                 )as AppDummyApplication
-                FavoritosViewModel(app.container.librosRepository)
+                DetalleViewModel(
+                    savedStateHandle = createSavedStateHandle(),
+                    repository = app.container.librosRepository
+                )
             }
         }
     }

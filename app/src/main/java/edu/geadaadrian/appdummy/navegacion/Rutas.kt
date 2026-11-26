@@ -7,3 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable data object Favoritos
 
 @Serializable data object Permisos
+
+@Serializable data object NuevoLibro

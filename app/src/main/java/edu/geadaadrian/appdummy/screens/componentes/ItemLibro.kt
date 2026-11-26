@@ -50,25 +50,13 @@ fun ItemLibro(libro: Libro,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(libro.titulo, style = MaterialTheme.typography.titleSmall)
-            if (Patterns.WEB_URL.matcher(libro.cover).matches())
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(libro.cover)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Portada de ${libro.titulo}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.width(200.dp)
-                        .height(200.dp)
-                )
-            else // Si no es una URL válida, se muestra una imagen por defecto
-                AsyncImage(
-                    model = R.drawable.nocover,
-                    contentDescription = "Portada de ${libro.titulo}",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.width(200.dp)
-                        .height(200.dp)
-                )
+            CaratulaLibro(
+                coverUrl = libro.cover,
+                titulo = libro.titulo,
+                modifier = Modifier
+                    .width(200.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
 
             Text(
                 text = "${libro.autor} • ${libro.year}",
